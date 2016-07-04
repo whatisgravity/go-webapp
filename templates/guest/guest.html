@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>{{.Title}}</title>
 	<link rel="icon" href="assets/img/favicon-64x64.png" type="image/png">
 	<link href="assets/css/surface_styles.css" rel="stylesheet">
 	<link href="assets/css/monokai_sublime.css" rel="stylesheet">
@@ -50,7 +51,39 @@
 		</header>
 		<div class="g--10 m--1">
 			<h2 class="fade-in-from-top color--pink">The framework you've been waiting for</h2>
-		</div>
+        <div class="container" id="orders">
+          <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    <h4>Submit an Order</h4>
+                </div>
+                <div class="panel-body center-block">
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Title of the product" v-model="order.attributes.product_title">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Description of the product" v-model="order.attributes.product_description"></textarea>
+                    </div>
+                    <button class="btn btn-primary center-block" v-on:click="postOrder">Submit</button>
+                </div>
+             </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="list-group">
+                <div class="list-group-item" v-for="order in orders">
+                  <button class="btn btn-xs btn-primary" v-on:click="deleteOrder($index)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+
+
+
 		<div class="g--10 m--1 container container--wrap--s">
 			<div class="g--4 g-s--12 fade-in-from-top card anim-delay--5">
 				<h3>Material Design</h3>
@@ -75,4 +108,7 @@
 		</div>
 	</main>
 </body>
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/vue-resource.min.js"></script>
+  <script src="assets/js/app.js"></script>
 </hmtl>

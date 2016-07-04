@@ -11,14 +11,13 @@ type DBStorage struct {
 	Opened bool
 }
 
-func (s *DBStorage) Open(filePath string) error {
+func (s *DBStorage) Open(filePath string) (*storm.DB, error) {
 	var err error
-	s.DB, err = storm.Open(filePath)
+	s.DB, err = storm.Open(filePath, storm.AutoIncrement())
 	if err == nil {
 		s.Opened = true
-		defer s.DB.Close()
 	}
-	return err
+	return s.DB, err
 }
 
 func (s *DBStorage) Close() error {

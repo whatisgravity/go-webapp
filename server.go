@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"./config"
 	"./database"
@@ -11,39 +12,41 @@ import (
 )
 
 func main() {
-	// Load Config
+	// CONFIG
 	err := config.Load("config/config.yaml")
 	if err != nil {
 		fmt.Println("Error: Failed to load configuration")
 	}
-	// Load Database
-	err = database.Storage.Open(config.State.DatabasePath)
+	// DATABASE
+	fmt.Println("Opening database at...", config.State.DatabasePath)
+	_, err = database.Storage.Open(config.State.DatabasePath)
 	if err != nil {
 		fmt.Println("Error: Failed to load database")
 	}
-	// Initialize Gin HTTP Server
+	defer database.Storage.Close()
+	// HTTP Server
+	if !config.State.Debug {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.Default()
+	// WEB UI
 	r.Static("assets", "./assets")
 	r.LoadHTMLGlob("templates/**/*")
-	r.GET("/", indexRoute)
-
+	r.GET("/", index)
 	// REST API
 	currentAPI := r.Group("/api/v" + config.State.APIVersion)
 	orderEndpoint := currentAPI.Group("/order")
 	{
-		orderEndpoint.POST("/", order.Post)
 		orderEndpoint.GET("/", order.List)
 		orderEndpoint.GET("/:id", order.Get)
-		orderEndpoint.PATCH("/:id", order.Patch)
-		orderEndpoint.DELETE("/:id", order.Delete)
+		orderEndpoint.GET("/:id/delete", order.Delete)
+		orderEndpoint.POST("/", order.Post)
+		orderEndpoint.POST("/:id/patch", order.Patch)
 	}
 
 	r.Run(":" + config.State.Port)
 }
 
-func indexRoute(c *gin.Context) {
-	c.HTML(200, "guest.html",
-		gin.H{
-			"title": "Variable Title",
-		})
+func index(c *gin.Context) {
+	http.ServeFile(c.Writer, c.Request, "templates/guest/guest.html")
 }

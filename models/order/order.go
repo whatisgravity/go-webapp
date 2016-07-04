@@ -1,10 +1,13 @@
 package order
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
-	"github.com/Depado/govue/hateoas"
+	"../../hateoas"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,21 +19,23 @@ const (
 
 // Order is the main struct
 type Order struct {
-	ID                 int    `json:"id"`
-	ProductTitle       string `json:"product_title"`
-	ProductDescription string `json:"product_description"`
+	ID                 int       `json:"id"`
+	ProductID          int       `json:"product_id"`
+	ProductTitle       string    `json:"product_title"`
+	ProductDescription string    `json:"product_description"`
+	CreatedAt          time.Time `storm:"index"`
 }
 
 // Validate validates that all the required files are not empty.
-func (o Order) Validate() hateoas.Errors {
+func (order Order) Validate() hateoas.Errors {
 	var errors hateoas.Errors
-	if o.ProductTitle == "" {
+	if order.ProductTitle == "" {
 		errors = append(errors, hateoas.Error{
 			Status: http.StatusBadRequest,
 			Title:  "title field is required",
 		})
 	}
-	if o.ProductDescription == "" {
+	if order.ProductDescription == "" {
 		errors = append(errors, hateoas.Error{
 			Status: http.StatusBadRequest,
 			Title:  "description field is required",
@@ -65,18 +70,26 @@ type MultiWrapper struct {
 func Post(c *gin.Context) {
 	var err error
 	var json = Wrapper{}
-
+	fmt.Println("in post")
 	if err = c.BindJSON(&json); err == nil {
+		fmt.Println("got json")
 		errors := json.Data.Attributes.Validate()
 		if len(errors) > 0 {
+			fmt.Println("failed json parse")
 			c.JSON(http.StatusBadRequest, Wrapper{Errors: &errors})
 			return
 		}
-		if err = json.Data.Attributes.Save(); err != nil {
+		var order *Order
+		order = json.Data.Attributes
+		fmt.Println("product title: " + order.ProductTitle)
+		fmt.Println("product description: " + order.ProductDescription)
+		if err = order.Save(); err != nil {
+			fmt.Println("ERR: ", err)
 			json.Data = nil
 			json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "could not save order"}}
 			c.JSON(http.StatusInternalServerError, json)
 		} else {
+			fmt.Println("saved")
 			json.Data.Links = &Links{"self": c.Request.URL.RequestURI() + strconv.Itoa(json.Data.Attributes.ID)}
 			c.JSON(http.StatusCreated, json)
 		}
@@ -92,14 +105,14 @@ func List(c *gin.Context) {
 	var json = MultiWrapper{}
 	var datas = []Data{}
 
-	ord, err := All()
+	orders, err := All()
 	if err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "could not retrieve order"}}
 		c.JSON(http.StatusInternalServerError, json)
 		return
 	}
-	for i := range ord {
-		datas = append(datas, Data{Type: Type, Attributes: &ord[i]})
+	for index := range orders {
+		datas = append(datas, Data{Type: Type, Attributes: &orders[index]})
 	}
 	json.Data = &datas
 	c.JSON(http.StatusOK, json)
@@ -108,24 +121,23 @@ func List(c *gin.Context) {
 // Get is the handler to GET an existing order
 func Get(c *gin.Context) {
 	var err error
-	var o Order
+	var order Order
 	var json = Wrapper{}
 
 	id := c.Param("id")
-	if err = o.Get(id); err != nil {
+	if err = order.Get(id); err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusNotFound, Title: "id could not be found"}}
 		c.JSON(http.StatusNotFound, json)
 		return
 	}
-	if o.ID, err = strconv.Atoi(id); err != nil {
+	if order.ID, err = strconv.Atoi(id); err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "id can't be parsed"}}
 		c.JSON(http.StatusInternalServerError, json)
 	}
-	json.Data = &Data{Type: Type, Attributes: &o}
+	json.Data = &Data{Type: Type, Attributes: &order}
 	c.JSON(http.StatusOK, json)
 }
 
-// Patch is used to update a resource.
 func Patch(c *gin.Context) {
 	var err error
 	var o Order
