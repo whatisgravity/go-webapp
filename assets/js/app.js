@@ -4,6 +4,7 @@ new Vue({
     order: {
       type: 'order',
       attributes: {
+        id: 0,
         product_title: 'test',
         product_description: 'test',
       }
@@ -12,6 +13,7 @@ new Vue({
     },
   ready: function() {
     this.orderEndpoint = this.$resource('api/v1/order/{id}');
+    this.orderDeleteEndpoint = this.$resource('api/v1/order/{id}/delete');
     this.fetchOrders();
   },
   methods: {
@@ -34,7 +36,9 @@ new Vue({
         };
     },
     deleteOrder: function(index) {
-        this.orderEndpoint.get({id: this.orders[index].attributes.id} + "/delete").then(function(response) {
+        console.log("index passed in is" + index)
+        console.log("id of indexed item is " + this.orders[index].attributes.id)
+        this.orderDeleteEndpoint.get({id: this.orders[index].attributes.id}).then(function(response) {
             this.orders.splice(index, 1);
         }, function(response) {
             console.log(response);

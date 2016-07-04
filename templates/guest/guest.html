@@ -70,19 +70,29 @@
         </div>
 
         <div class="col-sm-6">
-            <div class="list-group">
-                <div class="list-group-item" v-for="order in orders">
-                  <button class="btn btn-xs btn-primary" v-on:click="deleteOrder($index)">Delete</button>
-                </div>
-            </div>
-        </div>
+          <div class="list-group">
+             <div class="list-group-item" v-for="order in orders">
+               <div class="btn-group pull-right" role="group">
+						     <span class="dropdown pull-right">
+                   <button class="btn btn-xs dropdown-toggle" type="button" id="dropdown{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                       <i class="glyphicon glyphicon-cog"></i>
+                   </button>
+                   <ul class="dropdown-menu" aria-labelledby="dropdown{{$index}}">
+                       <li><a href="#" v-on:click="deleteOrder($index)"><i class="glyphicon glyphicon-pencil"></i> Edit</a></li>
+                       <li role="separator" class="divider"></li>
+                       <li><a href="#" v-on:click="deleteOrder($index)"><i class="glyphicon glyphicon-trash"></i> Delete</a></li>
+                   </ul>
+                 </span>
+                 <h4 class="list-group-item-heading">{{ order.attributes.product_title }} INDEX({{ $index }})</h4>
+                 <p class="list-group-item-text">{{ order.attributes.product_description }}</p>
+                 <button class="btn btn-xs btn-primary" v-on:click="deleteOrder($index)"><i class="glyphicon glyphicon-pencil"></i> Edit</button>
+                 <button class="btn btn-xs btn-danger" v-on:click="deleteOrder($index)">Delete</button>
+               </div>
+             </div>
+           </div>
+         </div>
     </div>
-
-
-
     </div>
-
-
 
 		<div class="g--10 m--1 container container--wrap--s">
 			<div class="g--4 g-s--12 fade-in-from-top card anim-delay--5">

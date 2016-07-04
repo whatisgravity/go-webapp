@@ -31,7 +31,6 @@ func main() {
 	r := gin.Default()
 	// WEB UI
 	r.Static("assets", "./assets")
-	r.LoadHTMLGlob("templates/**/*")
 	r.GET("/", index)
 	// REST API
 	currentAPI := r.Group("/api/v" + config.State.APIVersion)

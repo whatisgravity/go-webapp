@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
+	//"time"
 
 	"../../hateoas"
 
@@ -19,11 +19,10 @@ const (
 
 // Order is the main struct
 type Order struct {
-	ID                 int       `json:"id"`
-	ProductID          int       `json:"product_id"`
-	ProductTitle       string    `json:"product_title"`
-	ProductDescription string    `json:"product_description"`
-	CreatedAt          time.Time `storm:"index"`
+	ID                 int    `json:"id"`
+	ProductTitle       string `storm:"index" json:"product_title"`
+	ProductDescription string `json:"product_description"`
+	//CreatedAt          time.Time `storm:"index"`
 }
 
 // Validate validates that all the required files are not empty.
@@ -70,21 +69,15 @@ type MultiWrapper struct {
 func Post(c *gin.Context) {
 	var err error
 	var json = Wrapper{}
-	fmt.Println("in post")
 	if err = c.BindJSON(&json); err == nil {
-		fmt.Println("got json")
 		errors := json.Data.Attributes.Validate()
 		if len(errors) > 0 {
-			fmt.Println("failed json parse")
 			c.JSON(http.StatusBadRequest, Wrapper{Errors: &errors})
 			return
 		}
 		var order *Order
 		order = json.Data.Attributes
-		fmt.Println("product title: " + order.ProductTitle)
-		fmt.Println("product description: " + order.ProductDescription)
 		if err = order.Save(); err != nil {
-			fmt.Println("ERR: ", err)
 			json.Data = nil
 			json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "could not save order"}}
 			c.JSON(http.StatusInternalServerError, json)
@@ -100,11 +93,9 @@ func Post(c *gin.Context) {
 	}
 }
 
-// List lists the orders
 func List(c *gin.Context) {
 	var json = MultiWrapper{}
 	var datas = []Data{}
-
 	orders, err := All()
 	if err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "could not retrieve order"}}
@@ -118,21 +109,16 @@ func List(c *gin.Context) {
 	c.JSON(http.StatusOK, json)
 }
 
-// Get is the handler to GET an existing order
 func Get(c *gin.Context) {
 	var err error
 	var order Order
 	var json = Wrapper{}
 
-	id := c.Param("id")
-	if err = order.Get(id); err != nil {
+	id, _ := strconv.Atoi(c.Param("id"))
+	if order, err = order.Get(id); err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusNotFound, Title: "id could not be found"}}
 		c.JSON(http.StatusNotFound, json)
 		return
-	}
-	if order.ID, err = strconv.Atoi(id); err != nil {
-		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "id can't be parsed"}}
-		c.JSON(http.StatusInternalServerError, json)
 	}
 	json.Data = &Data{Type: Type, Attributes: &order}
 	c.JSON(http.StatusOK, json)
@@ -140,21 +126,15 @@ func Get(c *gin.Context) {
 
 func Patch(c *gin.Context) {
 	var err error
-	var o Order
+	var order Order
 	var json = Wrapper{}
-
-	id := c.Param("id")
-	if err = o.Get(id); err != nil {
+	id, _ := strconv.Atoi(c.Param("id"))
+	if order, err = order.Get(id); err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusNotFound, Title: "id could not be found"}}
 		c.JSON(http.StatusNotFound, json)
 		return
 	}
-	if o.ID, err = strconv.Atoi(id); err != nil {
-		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "id can't be parsed"}}
-		c.JSON(http.StatusInternalServerError, json)
-		return
-	}
-	json.Data = &Data{Type: Type, Attributes: &o}
+	json.Data = &Data{Type: Type, Attributes: &order}
 	if err = c.BindJSON(&json); err == nil {
 		if err = json.Data.Attributes.Save(); err != nil {
 			json.Data = nil
@@ -172,22 +152,17 @@ func Patch(c *gin.Context) {
 
 // Delete deletes a resource
 func Delete(c *gin.Context) {
+	fmt.Println("Delete thing")
 	var err error
-	var o Order
+	var order Order
 	var json = Wrapper{}
-
-	id := c.Param("id")
-	if err = o.Get(id); err != nil {
+	id, _ := strconv.Atoi(c.Param("id"))
+	if order, err = order.Get(id); err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusNotFound, Title: "id could not be found"}}
 		c.JSON(http.StatusNotFound, json)
 		return
 	}
-	if o.ID, err = strconv.Atoi(id); err != nil {
-		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "id can't be parsed"}}
-		c.JSON(http.StatusInternalServerError, json)
-		return
-	}
-	if err = o.Delete(); err != nil {
+	if err = order.Delete(); err != nil {
 		json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "couldn't delete resource"}}
 		c.JSON(http.StatusInternalServerError, json)
 		return

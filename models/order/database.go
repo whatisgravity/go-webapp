@@ -3,37 +3,29 @@ package order
 import (
 	"fmt"
 
-	//"../../config"
 	"../../database"
-	//"github.com/asdine/storm"
 )
 
 func (order *Order) Save() error {
 	if !database.Storage.Opened {
-		return fmt.Errorf("db must be opened before saving")
+		return fmt.Errorf("Database Error: DB must be opened before deleting.")
 	}
-	fmt.Println("saving opened state: ", database.Storage.Opened)
-	fmt.Println("Opened and trying to save in db")
-	fmt.Println("product title: " + order.ProductTitle)
-	fmt.Println("product description: " + order.ProductDescription)
-	//db, _ := database.Storage.Open(config.State.DatabasePath)
-	//db, _ = storm.Open(config.State.DatabasePath, storm.AutoIncrement())
-
 	return database.Storage.DB.Save(order)
 }
 
 func (order Order) Delete() error {
 	if !database.Storage.Opened {
-		return fmt.Errorf("db must be opened before deleting")
+		return fmt.Errorf("Database Error: DB must be opened before deleting.")
 	}
 	return database.Storage.DB.Remove(&order)
 }
 
-func (order Order) Get(key string) error {
+func (order Order) Get(key int) (Order, error) {
 	if !database.Storage.Opened {
-		return fmt.Errorf("Database must be opened first.")
+		return order, fmt.Errorf("Database Error: DB must be opened before deleting.")
 	}
-	return database.Storage.DB.One("ID", key, order)
+	err := database.Storage.DB.One("ID", key, &order)
+	return order, err
 }
 
 // All returns all the orders
