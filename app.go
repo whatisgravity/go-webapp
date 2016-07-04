@@ -46,5 +46,5 @@ func main() {
 }
 
 func index(c *gin.Context) {
-	http.ServeFile(c.Writer, c.Request, "templates/js/guest/guest.html")
+	http.ServeFile(c.Writer, c.Request, "templates/js/index.html")
 }

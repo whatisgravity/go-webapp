@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Paygate</title>
+	<link rel="icon" href="assets/img/favicon-64x64.png" type="image/png">
+	<link href="assets/css/surface_styles.css" rel="stylesheet">
+	<link href="assets/css/monokai_sublime.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/vue-resource.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<input type="checkbox" id="nav--super-vertical-responsive">
+	<label for="nav--super-vertical-responsive">MENU</label>
+	<aside class="nav--super-vertical g--2 g-m--3 g-s--6 g-t--12 no-margin-vertical">
+		<div class="g--12 logo-area no-margin-vertical">
+      <h4 class="color--pink no-margin-vertical"><i class="fa fa-coffee"></i><span style="font-weight:700;">Pay</span><span style="color:#333;">gate</span></h5>
+		</div>
+		<nav class="g--12 no-margin-vertical">
+			<a href="#">Login</a>
+			<div class="nav-collapsible">
+				<input type="checkbox" id="nav-collapsible-1">
+				<label for="nav-collapsible-1">Account</label>
+				<div class="nav-collapsible-links">
+					<a href="#">Balances</a>
+					<a href="#">Orders</a>
+					<a href="#">History</a>
+				</div>
+			</div>
+			<a href="#">About</a>
+		</nav>
+	</aside>
+	<main class="g--10 g-m--12 m--2 m-m--0 no-margin-vertical">
+		<header class="container--wrap">
+			<h1 class="m--1 g--4 g-s--12">Surface</h1>
+		</header>
+    <div class="container" id="orders" style="margin-bottom:0px;">
+		  <div class="g--10 m--1" style="margin-bottom:0px;">
+			  <h2 class="fade-in-from-top color--pink">The framework you've been waiting for</h2>
+	      <div class="g--12 g-s--12 container container--wrap--s" style="margin-bottom:0px;">
+          <div class="g--5 g-s--12 nudge--left nudge--right no-nudge--s">
+            <div class="g--12 g-s--12 tile" style="margin-bottom:18px;">
+              <h4>Submit an Order</h4>
+              <input type="text" placeholder="Title of the product" style="width:100%;" v-model="order.attributes.product_title">
+              <textarea style="width:96.5%;height:225px;padding:12px;" placeholder="Description of the product" v-model="order.attributes.product_description"></textarea>
+            </div>
+            <button class="btn--raised btn--primary center-block" style="margin-top:0px;" v-on:click="postOrder">Submit</button>
+          </div>
+          <div class="g--7 g-s--12 nudge--left nudge--right no-nudge--s">
+  	        <div class="g--12 g-s--12 fade-in-from-top card anim-delay--5" v-for="order in orders">
+              <span class="dropdown pull-right">
+                <button class="btn--float color--white btn--blue dropdown-toggle" type="button" id="dropdown{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <i class="fa fa-cog"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdown{{$index}}">
+                  <li><a href="#" v-on:click="deleteOrder($index)" style="width:150px;background-color:#FFF;">Edit</a></li>
+                  <li><a href="#" v-on:click="deleteOrder($index)" style="width:150px;background-color:#FFF;">Delete</a></li>
+                </ul>
+              </span>
+              <h4 class="list-group-item-heading">{{ order.attributes.product_title }}</h4>
+              <p class="list-group-item-text">{{ order.attributes.product_description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	  <div class="g--10 m--1 container container--wrap--s" style="margin-top:0px;">
+    	<div class="g--4 g-s--12 fade-in-from-top card anim-delay--5">
+	  		<h3>Material Design</h3>
+	  		<p>Design philosophy and aesthetics inspired by <a href="http://www.google.co.uk/design/spec/material-design/introduction.html">Google's Material Design</a>.</p>
+	  	</div>
+	  	<div class="g--4 g-s--12 fade-in-from-top anim-delay--10 card nudge--left nudge--right no-nudge--s">
+	    	<h3>Super Lightweight</h3>
+	  		<p>One file. 5.7kb minified and Gzipped.</p>
+	  	</div>
+    	<div class="g--4 g-s--12 fade-in-from-top anim-delay--15 card">
+	  		<h3>CSS Only</h3>
+	  		<p>100% CSS only. Absolutely zero Javascript.</p>
+	  	</div>
+	  </div>
+    <div class="g--10 m--1 fade-in-from-left anim-delay--20">
+	  	<h5>Browser Support</h5>
+	  	<p>Works back to IE10 and Safari 6.1. Will work on the majority of Firefox, Chrome and Opera builds.</p>
+    </div>
+	  <div class="g--10 m--1 fade-in-from-left anim-delay--25">
+    	<button class="btn--raised nudge--right">Download CSS</button>
+    	<button class="btn--raised btn--primary">Download SCSS</button>
+	  </div>
+	</main>
+</body>
+<script src="assets/js/app.js"></script>
+</hmtl>
