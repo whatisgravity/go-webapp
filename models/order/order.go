@@ -1,10 +1,9 @@
 package order
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
-	//"time"
+	"time"
 
 	"../../hateoas"
 
@@ -19,10 +18,10 @@ const (
 
 // Order is the main struct
 type Order struct {
-	ID                 int    `json:"id"`
-	ProductTitle       string `storm:"index" json:"product_title"`
-	ProductDescription string `json:"product_description"`
-	//CreatedAt          time.Time `storm:"index"`
+	ID                 int       `json:"id"`
+	ProductTitle       string    `storm:"index" json:"product_title"`
+	ProductDescription string    `json:"product_description"`
+	CreatedAt          time.Time `storm:"index"`
 }
 
 // Validate validates that all the required files are not empty.
@@ -82,7 +81,6 @@ func Post(c *gin.Context) {
 			json.Errors = &hateoas.Errors{hateoas.Error{Status: http.StatusInternalServerError, Title: "could not save order"}}
 			c.JSON(http.StatusInternalServerError, json)
 		} else {
-			fmt.Println("saved")
 			json.Data.Links = &Links{"self": c.Request.URL.RequestURI() + strconv.Itoa(json.Data.Attributes.ID)}
 			c.JSON(http.StatusCreated, json)
 		}
@@ -150,9 +148,7 @@ func Patch(c *gin.Context) {
 	}
 }
 
-// Delete deletes a resource
 func Delete(c *gin.Context) {
-	fmt.Println("Delete thing")
 	var err error
 	var order Order
 	var json = Wrapper{}

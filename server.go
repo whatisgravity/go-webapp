@@ -42,10 +42,9 @@ func main() {
 		orderEndpoint.POST("/", order.Post)
 		orderEndpoint.POST("/:id/patch", order.Patch)
 	}
-
 	r.Run(":" + config.State.Port)
 }
 
 func index(c *gin.Context) {
-	http.ServeFile(c.Writer, c.Request, "templates/guest/guest.html")
+	http.ServeFile(c.Writer, c.Request, "templates/js/guest/guest.html")
 }
