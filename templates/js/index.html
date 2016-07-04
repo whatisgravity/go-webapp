@@ -38,17 +38,24 @@
     <div class="container" id="orders" style="margin-bottom:0px;">
 		  <div class="g--10 m--1" style="margin-bottom:0px;">
 			  <h2 class="fade-in-from-top color--pink">The framework you've been waiting for</h2>
-	      <div class="g--12 g-s--12 container container--wrap--s" style="margin-bottom:0px;">
-          <div class="g--5 g-s--12 nudge--left nudge--right no-nudge--s">
-            <div class="g--12 g-s--12 tile" style="margin-bottom:18px;">
+    <div class="g--12 g-s--12 fade-in-from-left anim-delay--5" style="margin-bottom:0px;">
+	  	<p>Works back to IE10 and Safari 6.1. Will work on the majority of Firefox, Chrome and Opera builds.</p>
+    </div>
+	  <div class="g--12 g-s--12 fade-in-from-left anim-delay--5">
+    	<button class="btn--raised nudge--right">Download CSS</button>
+    	<button class="btn--raised btn--primary">Download SCSS</button>
+	  </div>
+	      <div class="g--12 g-s--12 container container--wrap--s" style="margin-bottom:0px;margin-top:0px;">
+          <div class="g--5 g-s--12 nudge--right no-nudge--s" style="margin-bottom:0px;margin-top:0px;">
+            <div class="g--12 g-s--12 tile" style="margin-bottom:18px;margin-top:0px;">
               <h4>Submit an Order</h4>
               <input type="text" placeholder="Title of the product" style="width:100%;" v-model="order.attributes.product_title">
               <textarea style="width:96.5%;height:225px;padding:12px;" placeholder="Description of the product" v-model="order.attributes.product_description"></textarea>
             </div>
             <button class="btn--raised btn--primary center-block" style="margin-top:0px;" v-on:click="postOrder">Submit</button>
           </div>
-          <div class="g--7 g-s--12 nudge--left nudge--right no-nudge--s">
-  	        <div class="g--12 g-s--12 fade-in-from-top card anim-delay--5" v-for="order in orders">
+          <div class="g--8 g-s--12 nudge--left no-nudge--s" style="margin-top:0px;">
+  	        <div class="g--12 g-s--12 fade-in-from-top card anim-delay--5" v-for="order in orders" style="margin-top:0px;">
               <span class="dropdown pull-right">
                 <button class="btn--float color--white btn--blue dropdown-toggle" type="button" id="dropdown{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   <i class="fa fa-cog"></i>
