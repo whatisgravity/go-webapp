@@ -1,4 +1,4 @@
-new Vue({
+orders = new Vue({
   el: '#orders',
   data: {
     order: {

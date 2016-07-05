@@ -15,7 +15,7 @@
 	<label for="nav--super-vertical-responsive">MENU</label>
 	<aside class="nav--super-vertical g--2 g-m--3 g-s--6 g-t--12 no-margin-vertical">
 		<div class="g--12 logo-area no-margin-vertical">
-      <h4 class="color--pink no-margin-vertical"><i class="fa fa-coffee"></i><span style="font-weight:700;">Pay</span><span style="color:#333;">gate</span></h5>
+      <h4 class="color--blue no-margin-vertical"><i class="fa fa-shopping-basket" style="padding-right:3px"></i><span style="font-weight:700;">Pay</span><span style="color:#333;">gate</span></h5>
 		</div>
 		<nav class="g--12 no-margin-vertical">
 			<a href="#">Login</a>
@@ -32,19 +32,19 @@
 		</nav>
 	</aside>
 	<main class="g--10 g-m--12 m--2 m-m--0 no-margin-vertical">
-		<header class="container--wrap">
-			<h1 class="m--1 g--4 g-s--12">Cryptocurrency payment gateway</h1>
+		<header class="container--wrap bg--blue">
+			<h1 class="m--1 g--4 g-s--12 bg--blue">Cryptocurrency payment gateway</h1>
 		</header>
-    <div class="container" id="orders" style="margin-bottom:0px;">
-		  <div class="g--10 m--1" style="margin-bottom:0px;">
-			  <h2 class="fade-in-from-top color--pink">The framework you've been waiting for</h2>
-    <div class="g--12 g-s--12 fade-in-from-left anim-delay--5" style="margin-bottom:0px;">
-	  	<p>Works back to IE10 and Safari 6.1. Will work on the majority of Firefox, Chrome and Opera builds.</p>
-    </div>
-	  <div class="g--12 g-s--12 fade-in-from-left anim-delay--5">
-    	<button class="btn--raised nudge--right">Download CSS</button>
-    	<button class="btn--raised btn--primary">Download SCSS</button>
-	  </div>
+    <div class="container" id="orders" style="margin-bottom:0px;margin-top:0px;">
+		  <div class="g--10 m--1" style="margin-top:0px;margin-bottom:0px;">
+			  <h2 class="fade-in-from-top color--blue">The framework you've been waiting for</h2>
+        <div class="g--12 g-s--12 fade-in-from-left anim-delay--5" style="margin-bottom:0px;">
+	  	    <p>Works back to IE10 and Safari 6.1. Will work on the majority of Firefox, Chrome and Opera builds.</p>
+        </div>
+	      <div class="g--12 g-s--12 fade-in-from-left anim-delay--5">
+    	    <button class="btn--raised nudge--right">Download CSS</button>
+    	    <button class="btn--raised btn--primary">Download SCSS</button>
+	      </div>
 	      <div class="g--12 g-s--12 container container--wrap--s" style="margin-bottom:0px;margin-top:0px;">
           <div class="g--5 g-s--12 nudge--right no-nudge--s" style="margin-bottom:0px;margin-top:0px;">
             <div class="g--12 g-s--12 tile" style="margin-bottom:18px;margin-top:0px;">
@@ -55,18 +55,16 @@
             <button class="btn--raised btn--primary center-block" style="margin-top:0px;" v-on:click="postOrder">Submit</button>
           </div>
           <div class="g--8 g-s--12 nudge--left no-nudge--s" style="margin-top:0px;">
-  	        <div class="g--12 g-s--12 fade-in-from-top card anim-delay--5" v-for="order in orders" style="margin-top:0px;">
-              <span class="dropdown pull-right">
-                <button class="btn--float color--white btn--blue dropdown-toggle" type="button" id="dropdown{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <i class="fa fa-cog"></i>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdown{{$index}}">
-                  <li><a href="#" v-on:click="deleteOrder($index)" style="width:150px;background-color:#FFF;">Edit</a></li>
-                  <li><a href="#" v-on:click="deleteOrder($index)" style="width:150px;background-color:#FFF;">Delete</a></li>
-                </ul>
-              </span>
-              <h4 class="list-group-item-heading">{{ order.attributes.product_title }}</h4>
-              <p class="list-group-item-text">{{ order.attributes.product_description }}</p>
+  	        <div class="collapsible-wrap card no-pad" v-for="order in orders" style="margin-top:0px;">
+              <input type="checkbox" id="collapsible-{{$index}}">
+              <label for="collapsible-{{$index}}"><span style="font-weight:700;">Order #{{order.attributes.id}}</span>&nbsp;&nbsp;&nbsp;{{ order.attributes.product_title }}</label>
+              <div class="collapsible-{{$index}}-area">
+                <div style="position:absolute;right:16px;bottom:10px;">
+                  <button class="btn--blue btn--raised nudge--right color--white"><i class="fa fa-pencil"></i>&nbsp;Edit</button>
+                  <button class="btn--red btn--raised color--white" v-on:click="deleteOrder($index)"><i class="fa fa-trash"></i>&nbsp;Delete</button>
+                </div>
+                <p class="list-group-item-text">{{ order.attributes.product_description }}</p>
+              </div>
             </div>
           </div>
         </div>
