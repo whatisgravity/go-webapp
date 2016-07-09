@@ -48,14 +48,15 @@
 	      </div>
 	      <div class="g--12 g-s--12 container container--wrap--s" style="margin-bottom:0px;margin-top:0px;">
           <div class="g--5 g-s--12 nudge--right no-nudge--s" style="margin-bottom:0px;margin-top:0px;">
+            <h5>Create Order</h5>
             <div class="g--12 g-s--12 tile" style="margin-bottom:18px;margin-top:0px;">
-              <h4>Submit an Order</h4>
               <input type="text" placeholder="Title of the product" style="width:100%;" v-model="order.attributes.product_title">
               <textarea style="width:96.5%;height:225px;padding:12px;" placeholder="Description of the product" v-model="order.attributes.product_description"></textarea>
             </div>
             <button class="btn--raised btn--primary center-block" style="margin-top:0px;" v-on:click="postOrder">Submit</button>
           </div>
           <div class="g--8 g-s--12 nudge--left no-nudge--s" style="margin-top:0px;">
+            <h5>Open Orders</h5>
   	        <div class="collapsible-wrap card no-pad" v-for="order in orders" style="margin-top:0px;">
               <input type="checkbox" id="collapsible-{{$index}}">
               <label for="collapsible-{{$index}}"><span style="font-weight:700;">Order #{{order.attributes.id}}</span>&nbsp;&nbsp;&nbsp;{{ order.attributes.product_title }}</label>
@@ -112,7 +113,7 @@
     	<button class="btn--raised nudge--right">Download CSS</button>
     	<button class="btn--raised btn--primary">Download SCSS</button>
 	  </div>
-<div class="card g--12 tabs tab-demo-name">
+<div class="card g--10 m--1 tabs tab-demo-name">
   <input type="radio" name="tabs" id="tab1" checked>
   <div class="tab-label-content" id="tab1-content">
     <label for="tab1">Tab 1</label>
