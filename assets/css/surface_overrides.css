@@ -1,0 +1,71 @@
+/* I already modded surface a bit, need to rememdy that so this is just the overrides */
+
+article {
+    margin-bottom: 3rem;
+    position: relative;
+    *zoom: 1;
+}
+
+article:before, article:after {
+    content: "";
+    display: table;
+}
+
+article:after { clear: both }
+
+article section:first-of-type {
+}
+
+article section:last-of-type {
+    display: none;
+    visibility: hidden;
+}
+
+article input[type=checkbox] {
+    overflow: hidden;
+    visibility:hidden;
+}
+
+[for^="show_hide"] {
+    position: absolute;
+    bottom: -3rem;
+    cursor: pointer;
+}
+
+[for^="show_hide"] span:last-of-type {
+    display: none;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+article input[type=checkbox]:checked ~ section:first-of-type {
+    display: none;
+    visibility: hidden;
+    width: 100%;
+}
+
+article input[type=checkbox]:checked ~ section:last-of-type {
+    display: block;
+    visibility: visible;
+    width: 100%;
+}
+
+article input[type=checkbox]:checked ~ [for^="show_hide"] span:first-of-type {
+    display: none;
+    visibility: hidden;
+}
+
+article input[type=checkbox]:checked ~ [for^="show_hide"] span:last-of-type {
+    display: block;
+    visibility: visible;
+}
+
+.hbtns ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-align: center;
+}
+
+.hbtns ul li { display: inline;}
+

@@ -36,6 +36,13 @@ orders = new Vue({
             product_description: '',
         };
     },
+    patchOrder: function(index) {
+      document.querySelectorAll('article input[type=checkbox]')[index].checked = false;
+      this.orderPatchEndpoint.save({id: this.orders[index].attributes.id}, {data: this.orders[index]}).then(function(response) {
+      }, function(response) {
+          console.log(response);
+      });
+    },
     deleteOrder: function(index) {
         this.orderDeleteEndpoint.get({id: this.orders[index].attributes.id}).then(function(response) {
             this.orders.splice(index, 1);

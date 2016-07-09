@@ -4,6 +4,7 @@
   <title>Paygate</title>
 	<link rel="icon" href="assets/img/favicon-64x64.png" type="image/png">
 	<link href="assets/css/surface_styles.css" rel="stylesheet">
+	<link href="assets/css/surface_overrides.css" rel="stylesheet">
 	<link href="assets/css/monokai_sublime.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/font-awesome.min.css">
   <script src="assets/js/vue.min.js"></script>
@@ -59,11 +60,30 @@
               <input type="checkbox" id="collapsible-{{$index}}">
               <label for="collapsible-{{$index}}"><span style="font-weight:700;">Order #{{order.attributes.id}}</span>&nbsp;&nbsp;&nbsp;{{ order.attributes.product_title }}</label>
               <div class="collapsible-{{$index}}-area">
-                <div style="position:absolute;right:16px;bottom:10px;">
-                  <button class="btn--blue btn--raised nudge--right color--white"><i class="fa fa-pencil"></i>&nbsp;Edit</button>
-                  <button class="btn--red btn--raised color--white" v-on:click="deleteOrder($index)"><i class="fa fa-trash"></i>&nbsp;Delete</button>
-                </div>
                 <p class="list-group-item-text">{{ order.attributes.product_description }}</p>
+                <article class="patch-order">
+                  <input type="checkbox" id="show_hide_{{$index}}" role="button">
+                  <section>
+                  </section>
+                  <section>
+          <div class="g--12g-s--12 nudge--right no-nudge--s" style="margin-bottom:0px;margin-top:0px;">
+            <div class="g--12 g-s--12 tile" style="margin-bottom:18px;margin-top:0px;">
+              <h4>Edit Order</h4>
+              <input type="text" placeholder="Title of the product" style="width:100%;" v-model="order.attributes.product_title">
+              <textarea style="width:96.5%;height:85px;padding:12px;" placeholder="Description of the product" v-model="order.attributes.product_description"></textarea>
+              <button class="btn--raised btn--primary center-block" style="margin-top:15px;" v-on:click="patchOrder($index)">Save</button>
+
+            </div>
+          </div>
+                  </section>
+                    <label for="show_hide_{{$index}}" style="float:left;">
+                      <span style="float:left;"><i class="fa fa-pencil"></i>&nbsp;Edit</span>
+                      <span style="width:105px;float:left;"><i class="fa fa-minus"></i>&nbsp;Close Edit</span>
+                    </label>
+                    <div style="position:absolute;right:5px;bottom:-48px;">
+                      <span class="color--red" style="cursor:pointer;" v-on:click="deleteOrder($index)"><i class="fa fa-trash"></i>&nbsp;Delete</span>
+                    </div>
+                </article>
               </div>
             </div>
           </div>
@@ -92,6 +112,27 @@
     	<button class="btn--raised nudge--right">Download CSS</button>
     	<button class="btn--raised btn--primary">Download SCSS</button>
 	  </div>
+<div class="card g--12 tabs tab-demo-name">
+  <input type="radio" name="tabs" id="tab1" checked>
+  <div class="tab-label-content" id="tab1-content">
+    <label for="tab1">Tab 1</label>
+    <div class="tab-content">TAB 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis laoreet eget lectus eu congue.</div>
+  </div>
+
+  <input type="radio" name="tabs" id="tab2">
+  <div class="tab-label-content" id="tab2-content">
+    <label for="tab2">Tab 2</label>
+    <div class="tab-content">TAB 2 - Quisque egestas, purus in tempor vulputate, diam augue mollis quam, quis elementum ipsum ex a risus.</div>
+  </div>
+
+  <input type="radio" name="tabs" id="tab3">
+  <div class="tab-label-content" id="tab3-content">
+    <label for="tab3">Tab 3</label>
+    <div class="tab-content">TAB 3 - Quisque egestas, purus in tempor vulputate, diam augue mollis quam, quis elementum ipsum ex a risus.</div>
+  </div>
+
+  <div class="slide slide-demo"></div>
+</div>
 	</main>
 </body>
 <script src="assets/js/app.js"></script>
